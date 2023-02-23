@@ -1,11 +1,8 @@
-package com.codingtroops.restaurantsapp
+package com.example.restaurantv2.com.codingtroops.restaurantsapp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -20,39 +17,50 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.codingtroops.restaurantsapp.ui.theme.RestaurantsAppTheme
+import com.example.restaurantv2.com.codingtroops.restaurantsapp.Restaurant
 import com.example.restaurantv2.com.codingtroops.restaurantsapp.RestaurantsViewModel
+import com.codingtroops.restaurantsapp.ui.theme.RestaurantsAppTheme
 
 @Composable
-fun RestaurantsScreen() {
+fun RestaurantsScreen(onItemClick: (id: Int) -> Unit) {
     val viewModel: RestaurantsViewModel = viewModel()
-    viewModel.getRestaurants()
-    LazyColumn(
-        contentPadding = PaddingValues(
-            vertical = 8.dp,
-            horizontal = 8.dp
-        )
-    ) {
-        items(viewModel.state.value) { restaurant ->
+    val restaurants = viewModel.state.value
+    val isLoading = restaurants.isEmpty()
+    Box {
 
-            RestaurantItem(restaurant) { id ->
-                viewModel.toggleFavorite(id)
+
+        LazyColumn(
+            contentPadding = PaddingValues(
+                vertical = 8.dp,
+                horizontal = 8.dp
+            )
+        ) {
+            items(restaurants) { restaurant ->
+                RestaurantItem(restaurant,
+                    onFavoriteClick = { id, oldValue ->
+                        viewModel.toggleFavorite(id, oldValue)
+                    },
+                    onItemClick = { id -> onItemClick(id) })
             }
         }
+        if (isLoading)
+            CircularProgressIndicator()
     }
 }
 
 @Composable
 fun RestaurantItem(item: Restaurant,
-                    onClick: (id: Int) -> Unit) {
+                   onFavoriteClick: (id: Int, oldValue: Boolean) -> Unit,
+                   onItemClick: (id: Int) -> Unit) {
     val icon = if (item.isFavorite)
         Icons.Filled.Favorite
     else
         Icons.Filled.FavoriteBorder
-
     Card(
         elevation = 4.dp,
-        modifier = Modifier.padding(12.dp)
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable { onItemClick(item.id) }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -61,26 +69,28 @@ fun RestaurantItem(item: Restaurant,
             RestaurantIcon(Icons.Filled.Place, Modifier.weight(0.15f))
             RestaurantDetails(item.title, item.description, Modifier.weight(0.7f))
             RestaurantIcon(icon, Modifier.weight(0.15f)) {
-                onClick(item.id)
+                onFavoriteClick(item.id, item.isFavorite)
             }
         }
     }
 }
 
 @Composable
-private fun RestaurantIcon(icon: ImageVector, modifier: Modifier, onClick: () -> Unit = { }) {
+fun RestaurantIcon(icon: ImageVector, modifier: Modifier, onClick: () -> Unit = { }) {
     Image(
         imageVector = icon,
         contentDescription = "Restaurant icon",
         modifier = modifier
             .padding(8.dp)
-            .clickable { onClick() }
-    )
+            .clickable { onClick() })
 }
 
 @Composable
-private fun RestaurantDetails(title: String, description: String, modifier: Modifier) {
-    Column(modifier = modifier) {
+fun RestaurantDetails(title: String,
+                      description: String,
+                      modifier: Modifier,
+                      horizontalAlignment: Alignment.Horizontal = Alignment.Start) {
+    Column(modifier = modifier, horizontalAlignment = horizontalAlignment) {
         Text(
             text = title,
             style = MaterialTheme.typography.h6
@@ -96,11 +106,10 @@ private fun RestaurantDetails(title: String, description: String, modifier: Modi
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     RestaurantsAppTheme {
-        RestaurantsScreen()
+        RestaurantsScreen {}
     }
 }
