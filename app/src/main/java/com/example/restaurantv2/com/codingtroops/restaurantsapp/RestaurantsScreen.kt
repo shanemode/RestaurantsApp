@@ -17,16 +17,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.restaurantv2.com.codingtroops.restaurantsapp.Restaurant
-import com.example.restaurantv2.com.codingtroops.restaurantsapp.RestaurantsViewModel
 import com.codingtroops.restaurantsapp.ui.theme.RestaurantsAppTheme
 
 @Composable
 fun RestaurantsScreen(onItemClick: (id: Int) -> Unit) {
     val viewModel: RestaurantsViewModel = viewModel()
-    val restaurants = viewModel.state.value
-    val isLoading = restaurants.isEmpty()
-    Box {
+    val state = viewModel.state.value
+    Box(contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()) {
 
 
         LazyColumn(
@@ -35,7 +33,7 @@ fun RestaurantsScreen(onItemClick: (id: Int) -> Unit) {
                 horizontal = 8.dp
             )
         ) {
-            items(restaurants) { restaurant ->
+            items(state.restaurants) { restaurant ->
                 RestaurantItem(restaurant,
                     onFavoriteClick = { id, oldValue ->
                         viewModel.toggleFavorite(id, oldValue)
@@ -43,8 +41,10 @@ fun RestaurantsScreen(onItemClick: (id: Int) -> Unit) {
                     onItemClick = { id -> onItemClick(id) })
             }
         }
-        if (isLoading)
+        if (state.isLoading)
             CircularProgressIndicator()
+        if (state.error != null)
+            Text(state.error)
     }
 }
 
@@ -110,6 +110,6 @@ fun RestaurantDetails(title: String,
 @Composable
 fun DefaultPreview() {
     RestaurantsAppTheme {
-        RestaurantsScreen {}
+        RestaurantsScreen{}
     }
 }

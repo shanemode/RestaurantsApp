@@ -7,14 +7,14 @@
 
     <application
         android:allowBackup="true"
-        android:name="com.codingtroops.restaurantsapp.RestaurantsApplication"
+        android:name="com.example.restaurantv2.com.codingtroops.restaurantsapp.RestaurantsApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RestaurantsApp">
         <activity
-            android:name="com.codingtroops.restaurantsapp.MainActivity"
+            android:name="com.example.restaurantv2.com.codingtroops.restaurantsapp.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.RestaurantsApp.NoActionBar">
