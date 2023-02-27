@@ -1,20 +1,12 @@
-package com.example.restaurantv2.com.codingtroops.restaurantsapp
+package com.example.restaurantv2.com.codingtroops.restaurantsapp.restaurants.presentation.list
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.restaurantv2.com.codingtroops.restaurantsapp.PartialRestaurant
-import com.example.restaurantv2.com.codingtroops.restaurantsapp.Restaurant
-import com.example.restaurantv2.com.codingtroops.restaurantsapp.RestaurantsApiService
-import com.example.restaurantv2.com.codingtroops.restaurantsapp.RestaurantsDb
-import com.example.restaurantv2.com.codingtroops.restaurantsapp.RestaurantsApplication
+import com.example.restaurantv2.com.codingtroops.restaurantsapp.GetInitialRestaurantsUseCase
+import com.example.restaurantv2.com.codingtroops.restaurantsapp.restaurants.domain.ToggleRestaurantUseCase
 import kotlinx.coroutines.*
-import retrofit2.HttpException
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.net.ConnectException
-import java.net.UnknownHostException
 
 
 class RestaurantsViewModel() : ViewModel() {

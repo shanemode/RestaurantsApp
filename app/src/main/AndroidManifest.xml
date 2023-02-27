@@ -7,7 +7,7 @@
 
     <application
         android:allowBackup="true"
-        android:name="com.example.restaurantv2.com.codingtroops.restaurantsapp.RestaurantsApplication"
+        android:name="com.example.restaurantv2.com.codingtroops.restaurantsapp.restaurants.RestaurantsApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"

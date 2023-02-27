@@ -1,4 +1,4 @@
-package com.example.restaurantv2.com.codingtroops.restaurantsapp
+package com.example.restaurantv2.com.codingtroops.restaurantsapp.restaurants.presentation.list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -18,15 +18,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codingtroops.restaurantsapp.ui.theme.RestaurantsAppTheme
+import com.example.restaurantv2.com.codingtroops.restaurantsapp.restaurants.domain.Restaurant
+import com.example.restaurantv2.com.codingtroops.restaurantsapp.restaurants.presentation.list.RestaurantsViewModel
 
 @Composable
-fun RestaurantsScreen(onItemClick: (id: Int) -> Unit) {
-    val viewModel: RestaurantsViewModel = viewModel()
-    val state = viewModel.state.value
+fun RestaurantsScreen(
+    state: RestaurantsScreenState,
+    onItemClick: (id: Int) -> Unit,
+    onFavoriteClick: (id: Int, oldValue: Boolean) -> Unit
+) {
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()) {
-
-
         LazyColumn(
             contentPadding = PaddingValues(
                 vertical = 8.dp,
@@ -36,14 +38,13 @@ fun RestaurantsScreen(onItemClick: (id: Int) -> Unit) {
             items(state.restaurants) { restaurant ->
                 RestaurantItem(restaurant,
                     onFavoriteClick = { id, oldValue ->
-                        viewModel.toggleFavorite(id, oldValue)
-                    },
+                        onFavoriteClick(id, oldValue) },
                     onItemClick = { id -> onItemClick(id) })
             }
         }
-        if (state.isLoading)
+        if(state.isLoading)
             CircularProgressIndicator()
-        if (state.error != null)
+        if(state.error != null)
             Text(state.error)
     }
 }
@@ -103,13 +104,5 @@ fun RestaurantDetails(title: String,
                 style = MaterialTheme.typography.body2
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    RestaurantsAppTheme {
-        RestaurantsScreen{}
     }
 }

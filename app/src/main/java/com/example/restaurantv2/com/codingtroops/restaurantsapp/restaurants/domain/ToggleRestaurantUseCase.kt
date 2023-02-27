@@ -1,4 +1,8 @@
-package com.example.restaurantv2.com.codingtroops.restaurantsapp
+package com.example.restaurantv2.com.codingtroops.restaurantsapp.restaurants.domain
+
+import com.example.restaurantv2.com.codingtroops.restaurantsapp.restaurants.data.RestaurantsRepository
+import com.example.restaurantv2.com.codingtroops.restaurantsapp.restaurants.domain.GetSortedRestaurantsUseCase
+import com.example.restaurantv2.com.codingtroops.restaurantsapp.restaurants.domain.Restaurant
 
 class ToggleRestaurantUseCase {
     private val repository: RestaurantsRepository = RestaurantsRepository()

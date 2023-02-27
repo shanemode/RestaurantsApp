@@ -1,4 +1,4 @@
-package com.example.restaurantv2.com.codingtroops.restaurantsapp
+package com.example.restaurantv2.com.codingtroops.restaurantsapp.restaurants
 
 import android.app.Application
 import android.content.Context
